@@ -3,7 +3,10 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-
+axios.get('https://api.github.com/users/jduell12')
+  .then(data => {
+    console.log(data);
+  })
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -49,6 +52,52 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function makeCard (obj){
+  const {imgURL, name, userName, location, address, fs, fg, info} = obj;
+
+  //create elements
+  let card = document.createElement('div');
+  let img = document.createElement('img');
+  let cardInfo = document.createElement('div');
+  let nameH3 = document.createElement('h3');
+  let username = document.createElement('p');
+  let loc = document.createElement('p');
+  let profile = document.createElement('p');
+  let profileLink = document.createElement('a');
+  let followers = document.createElement('p');
+  let following = document.createElement('p');
+  let bio = document.createElement('p');
+
+  //add class names to each element 
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  username.classList.add('username');
+
+  //append each element onto each other appropiately
+  profile.appendChild(profileLink);
+  let elements = [nameH3, username, loc, profile, followers, following, bio];
+
+  elements.forEach(item => {
+    cardInfo.appendChild(item);
+  })
+
+  card.appendChild(img);
+  card.appendChild(cardInfo);
+
+  //add information to each element 
+  img.src = imgURL;
+  nameH3.textContent = name;
+  username.textContent = userName;
+  loc.textContent = location;
+  profileLink.href = address;
+  followers.textContent = fs;
+  following.textContent = fg;
+  bio.textContent = info;
+
+  //returns the card
+  return card;
+}
 
 /*
   List of LS Instructors Github username's:
