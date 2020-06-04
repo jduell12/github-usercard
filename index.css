@@ -101,6 +101,10 @@ body {
   margin-bottom: 30px;
 }
 
+#calendar{
+  width: 95%;
+}
+
 .card img {
   width: 150px;
   height: 150px;
@@ -122,6 +126,5 @@ body {
   font-style: italic;
   margin: 3px 0 10px;
 }
-
 
 
