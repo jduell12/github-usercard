@@ -21,18 +21,17 @@
     and append the returned markup to the DOM as a child of .cards
 */
 
-axios.get('https://api.github.com/users/jduell12')
-  .then(data => {
-    let front = data.data;
-    let card = makeCard({imgURL: front.avatar_url, name: front.name, userName: front.login, location: front.location, address: front.html_url, fs: front.followers, fg: front.following, info: front.bio});
-    let cardArea = document.querySelector('.cards');
-    cardArea.appendChild(card);
+// axios.get('https://api.github.com/users/jduell12')
+//   .then(data => {
+//     let front = data.data;
+//     let card = makeCard({imgURL: front.avatar_url, name: front.name, userName: front.login, location: front.location, address: front.html_url, fs: front.followers, fg: front.following, info: front.bio});
+//     let cardArea = document.querySelector('.cards');
+//     cardArea.appendChild(card);
     
-  })
-  
-  .catch(err => {
-    console.log(err);
-  })
+//   })
+//   .catch(err => {
+//     console.log(err);
+//   })
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
@@ -45,7 +44,21 @@ axios.get('https://api.github.com/users/jduell12')
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const usersArray = ['jduell12', 'MaryamMosstoufi', 'sage-jordan', 'tsbarrett89', 'emilioramirezeguia', 'Roboblox'];
+
+usersArray.forEach(item => {
+  axios.get(`https://api.github.com/users/${item}`)
+  .then(data => {
+    let front = data.data;
+    let card = makeCard({imgURL: front.avatar_url, name: front.name, userName: front.login, location: front.location, address: front.html_url, fs: front.followers, fg: front.following, info: front.bio});
+    let cardArea = document.querySelector('.cards');
+    cardArea.appendChild(card);
+    
+  })
+  .catch(err => {
+    console.log(err);
+  })
+})
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -95,7 +108,8 @@ function makeCard (obj){
   username.textContent = userName;
   loc.textContent = `Location: ${location}`;
   profileLink.href = address;
-  profile.textContent = `Profile:`;
+  profileLink.textContent = address;
+  profile.textContent = `Profile: `;
   followers.textContent = `Followers: ${fs}`;
   following.textContent = `Following: ${fg}`;
   bio.textContent = `Bio: ${info}`;
