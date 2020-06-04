@@ -3,11 +3,32 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-// axios.get('https://api.github.com/users/jduell12')
-//   .then(data => {
-//     console.log(data);
-//     console.log(data.data.avatar_url);
-//   })
+
+//get data from jduell12 user from api
+axios.get('https://api.github.com/users/jduell12')
+  .then(data => {
+    return data.data.followers_url;
+  })
+  //using the followers_url from jduell12 we are getting the followers of jduell12 user 
+  .then (url => {
+    //use axios to get followers information
+     axios.get(url)
+      .then(response => {
+        //loop over the followers array and getting their information needed to make cards 
+        response.data.forEach(userName => {
+           axios.get(`https://api.github.com/users/${userName.login}`)
+              .then(newData => {
+                let front = newData.data;
+                let card = makeCard({imgURL: front.avatar_url, name: front.name, userName: front.login, location: front.location, address: front.html_url, fs: front.followers, fg: front.following, info: front.bio});
+                let cardArea = document.querySelector('.cards');
+                cardArea.appendChild(card); 
+              })
+        })
+
+      })
+    })
+
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -44,21 +65,21 @@
     user, and adding that card to the DOM.
 */
 
-const usersArray = ['jduell12', 'MaryamMosstoufi', 'sage-jordan', 'tsbarrett89', 'emilioramirezeguia', 'Roboblox'];
+// const usersArray = ['jduell12', 'MaryamMosstoufi', 'sage-jordan', 'tsbarrett89', 'emilioramirezeguia', 'Roboblox'];
 
-usersArray.forEach(item => {
-  axios.get(`https://api.github.com/users/${item}`)
-  .then(data => {
-    let front = data.data;
-    let card = makeCard({imgURL: front.avatar_url, name: front.name, userName: front.login, location: front.location, address: front.html_url, fs: front.followers, fg: front.following, info: front.bio});
-    let cardArea = document.querySelector('.cards');
-    cardArea.appendChild(card);
+// usersArray.forEach(item => {
+//   axios.get(`https://api.github.com/users/${item}`)
+//   .then(data => {
+//     let front = data.data;
+//     let card = makeCard({imgURL: front.avatar_url, name: front.name, userName: front.login, location: front.location, address: front.html_url, fs: front.followers, fg: front.following, info: front.bio});
+//     let cardArea = document.querySelector('.cards');
+//     cardArea.appendChild(card);
     
-  })
-  .catch(err => {
-    console.log(err);
-  })
-})
+//   })
+//   .catch(err => {
+//     console.log(err);
+//   })
+// })
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
