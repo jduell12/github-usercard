@@ -3,10 +3,11 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-axios.get('https://api.github.com/users/jduell12')
-  .then(data => {
-    console.log(data);
-  })
+// axios.get('https://api.github.com/users/jduell12')
+//   .then(data => {
+//     console.log(data);
+//     console.log(data.data.avatar_url);
+//   })
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -19,6 +20,19 @@ axios.get('https://api.github.com/users/jduell12')
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
+
+axios.get('https://api.github.com/users/jduell12')
+  .then(data => {
+    let front = data.data;
+    let card = makeCard({imgURL: front.avatar_url, name: front.name, userName: front.login, location: front.location, address: front.html_url, fs: front.followers, fg: front.following, info: front.bio});
+    let cardArea = document.querySelector('.cards');
+    cardArea.appendChild(card);
+    
+  })
+  
+  .catch(err => {
+    console.log(err);
+  })
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
@@ -53,6 +67,7 @@ const followersArray = [];
     </div>
 */
 
+
 function makeCard (obj){
   const {imgURL, name, userName, location, address, fs, fg, info} = obj;
 
@@ -74,26 +89,28 @@ function makeCard (obj){
   cardInfo.classList.add('card-info');
   username.classList.add('username');
 
+  //add information to each element 
+  img.src = imgURL;
+  nameH3.textContent = name;
+  username.textContent = userName;
+  loc.textContent = `Location: ${location}`;
+  profileLink.href = address;
+  profile.textContent = `Profile:`;
+  followers.textContent = `Followers: ${fs}`;
+  following.textContent = `Following: ${fg}`;
+  bio.textContent = `Bio: ${info}`;
+
+
   //append each element onto each other appropiately
   profile.appendChild(profileLink);
+
   let elements = [nameH3, username, loc, profile, followers, following, bio];
 
   elements.forEach(item => {
     cardInfo.appendChild(item);
   })
-
   card.appendChild(img);
   card.appendChild(cardInfo);
-
-  //add information to each element 
-  img.src = imgURL;
-  nameH3.textContent = name;
-  username.textContent = userName;
-  loc.textContent = location;
-  profileLink.href = address;
-  followers.textContent = fs;
-  following.textContent = fg;
-  bio.textContent = info;
 
   //returns the card
   return card;
